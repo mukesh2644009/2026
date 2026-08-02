@@ -68,6 +68,49 @@ seen earlier, we catch it immediately.
 
 ---
 
+### 2. Contains Duplicate
+**File:** [`src/test/java/com/automation/Leet_217_containsDuplicate.java`](src/test/java/com/automation/Leet_217_containsDuplicate.java)
+**Problem:** Given an integer array `nums`, return `true` if any value
+appears at least twice, and `false` if every element is distinct.
+
+**Example:**
+```
+Input:  nums = [1, 2, 4]
+Output: false   // no repeated value
+```
+
+**Approach (HashSet membership check):**
+1. Keep a `HashSet<Integer>` called `seen` to track numbers encountered so far.
+2. For each number, check if it's already in `seen`.
+   - If yes, a duplicate exists — return `true` immediately.
+   - If no, add it to `seen` and continue.
+3. If the loop finishes without finding a repeat, return `false`.
+
+```java
+public static boolean containsDuplicate(int[] nums) {
+    Set<Integer> seen = new HashSet<>();
+    for (int i = 0; i < nums.length; i++) {
+        if (seen.contains(nums[i])) {
+            return true;
+        }
+        seen.add(nums[i]);
+    }
+    return false;
+}
+```
+
+**Why it works:** a `HashSet` gives O(1) average-time membership checks, so
+we avoid the brute-force O(n²) approach of comparing every pair of elements.
+The first time we see a number that's already in the set, we know it's a
+duplicate — same one-pass idea as Two Sum, just checking presence instead of
+looking up a paired value.
+
+**Complexity:**
+- Time: `O(n)` — single pass through the array.
+- Space: `O(n)` — worst case, the set holds every element.
+
+---
+
 <!--
 Template for new entries — copy this below for each new program:
 
