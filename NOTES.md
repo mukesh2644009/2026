@@ -111,6 +111,63 @@ looking up a paired value.
 
 ---
 
+### 3. Product of Array Except Self
+**File:** [`src/test/java/com/automation/Leet_238_productExceptSelf.java`](src/test/java/com/automation/Leet_238_productExceptSelf.java)
+**Problem:** Given an integer array `nums`, return an array `answer` where
+`answer[i]` is the product of all elements of `nums` except `nums[i]`,
+without using division.
+
+**Example:**
+```
+Input:  nums = [1, 2, 3, 5]
+Output: [30, 15, 10, 6]
+```
+
+**Approach (brute force, one product per index):**
+1. For each index `i`, compute the product of every other element by
+   looping over the whole array and skipping `j == i`.
+2. Store that product in `answer[i]`.
+3. Repeat for every index.
+
+```java
+public static int[] productExceptSelf(int[] nums) {
+    int n = nums.length;
+    int[] answer = new int[n];
+
+    for (int i = 0; i < n; i++) {
+        int product = 1;
+        for (int j = 0; j < n; j++) {
+            if (j != i) {
+                product = product * nums[j];
+            }
+        }
+        answer[i] = product;
+    }
+    return answer;
+}
+```
+
+**Bug fixed along the way:** the original code printed the *input* array
+(`a`) instead of the *result* (`b`), and printed it with plain
+`System.out.println(arr)` — which prints the array's object reference
+(e.g. `[I@1b6d3586`), not its contents. Fixed by printing
+`Arrays.toString(b)`.
+
+**Why it works:** for each position, re-scanning the array and multiplying
+everything except the current index directly matches the problem
+definition — no shortcuts, just the definition applied literally.
+
+**Complexity:**
+- Time: `O(n²)` — for every index, a full pass over the array.
+- Space: `O(n)` — for the output array (no extra space beyond that).
+
+> Note: this can be optimized to `O(n)` time using prefix/suffix products
+> (compute running product from the left, then multiply in a running
+> product from the right), but the brute-force version above is what's
+> currently in the repo.
+
+---
+
 <!--
 Template for new entries — copy this below for each new program:
 
