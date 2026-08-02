@@ -168,6 +168,67 @@ definition — no shortcuts, just the definition applied literally.
 
 ---
 
+### 4. Maximum Subarray (LeetCode #53)
+**File:** [`src/test/java/com/automation/Leet_53_maxSubArray.java`](src/test/java/com/automation/Leet_53_maxSubArray.java)
+**Problem:** Given an integer array `nums`, find the contiguous subarray
+(containing at least one number) with the largest sum, and return that sum.
+
+**Example:**
+```
+Input:  nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+Output: 6   // subarray [4, -1, 2, 1] has the largest sum
+```
+
+**Approach (Kadane's algorithm):**
+1. Start `currentSum` and `maxSum` at `nums[0]`.
+2. Walk the array from index `1` onward, adding each element to `currentSum`.
+3. Update `maxSum` if `currentSum` is bigger.
+4. If `currentSum` ever drops below `0`, reset it to `0` — a negative running
+   sum can only drag down any subarray that extends it, so it's better to
+   start fresh from the next element.
+
+```java
+public static int maxSubArray(int[] nums) {
+    int currentSum = nums[0];
+    int maxSum = nums[0];
+
+    for (int i = 1; i < nums.length; i++) {
+        currentSum = currentSum + nums[i];
+        maxSum = Math.max(currentSum, maxSum);
+        if (currentSum < 0) {
+            currentSum = 0;
+        }
+    }
+    return maxSum;
+}
+```
+
+**Bugs fixed along the way:**
+1. **Missing reset:** the original code never reset `currentSum` when it
+   went negative, so it just accumulated the whole array's running total
+   instead of restarting subarrays — e.g. it returned `2` instead of `6`
+   for the example above.
+2. **Wrong initial value:** `maxSum` (and later `currentSum`) started at
+   `0` instead of `nums[0]`. This breaks all-negative inputs — e.g.
+   `[-3, -1, -2]` should return `-1` (least-negative single element), but
+   starting at `0` returned `0`, a value that never even appears in the
+   array.
+3. **Off-by-one after the fix:** once both variables were initialized to
+   `nums[0]`, the loop still started at `i = 0`, which added `nums[0]` to
+   itself before the first real comparison — e.g. a single-element array
+   `[5]` returned `10` instead of `5`. Starting the loop at `i = 1` fixed it.
+
+**Why it works:** at every index, `currentSum` represents the best sum of a
+subarray ending at that index. Resetting it to `0` whenever it goes negative
+means we never let a bad run drag down a future subarray — we just start a
+new one. `maxSum` tracks the best value seen across all positions.
+
+**Complexity:**
+- Time: `O(n)` — single pass through the array.
+- Space: `O(1)` — only two running variables, no extra data structures.
+
+---
+
 <!--
 Template for new entries — copy this below for each new program:
 
