@@ -19,7 +19,7 @@ array again (which would be O(n) per check, O(n²) overall).
 
 ## Programs
 
-### 1. Two Sum
+### 1. Two Sum (LeetCode #1)
 **File:** [`src/test/java/com/automation/Leet_01_Two_Sum.java`](src/test/java/com/automation/Leet_01_Two_Sum.java)
 **Problem:** Given an array of integers `nums` and an integer `target`,
 return the indices of the two numbers that add up to `target`. Assume
@@ -68,7 +68,7 @@ seen earlier, we catch it immediately.
 
 ---
 
-### 2. Contains Duplicate
+### 2. Contains Duplicate (LeetCode #217)
 **File:** [`src/test/java/com/automation/Leet_217_containsDuplicate.java`](src/test/java/com/automation/Leet_217_containsDuplicate.java)
 **Problem:** Given an integer array `nums`, return `true` if any value
 appears at least twice, and `false` if every element is distinct.
@@ -111,7 +111,7 @@ looking up a paired value.
 
 ---
 
-### 3. Product of Array Except Self
+### 3. Product of Array Except Self (LeetCode #238)
 **File:** [`src/test/java/com/automation/Leet_238_productExceptSelf.java`](src/test/java/com/automation/Leet_238_productExceptSelf.java)
 **Problem:** Given an integer array `nums`, return an array `answer` where
 `answer[i]` is the product of all elements of `nums` except `nums[i]`,
