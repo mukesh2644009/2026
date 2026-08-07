@@ -229,6 +229,133 @@ new one. `maxSum` tracks the best value seen across all positions.
 
 ---
 
+### 5. Valid Anagram (LeetCode #242)
+**File:** [`src/test/java/com/automation/Leet_242_IsAnagram.java`](src/test/java/com/automation/Leet_242_IsAnagram.java)
+**Problem:** Given two strings `s` and `t`, return `true` if `t` is an
+anagram of `s` (same letters, same counts, possibly reordered).
+
+**Example:**
+```
+Input:  s = "muk", t = "esh"
+Output: false   // no shared letters at all
+```
+
+**Approach (character count array):**
+1. If the lengths differ, they can't be anagrams — return `false` early.
+2. Use a `count[26]` array (one slot per lowercase letter).
+3. Walk `s`, incrementing the count for each character.
+4. Walk `t`, decrementing the count for each character.
+5. If every slot is back to `0`, every letter in `s` was matched by the same
+   letter in `t` — return `true`. Otherwise, return `false`.
+
+```java
+public static boolean isAnagram(String s, String t) {
+    if (s.length() != t.length()) {
+        return false;
+    }
+
+    int[] count = new int[26];
+
+    for (int i = 0; i < s.length(); i++) {
+        count[s.charAt(i) - 'a']++;
+    }
+
+    for (int i = 0; i < t.length(); i++) {
+        count[t.charAt(i) - 'a']--;
+    }
+
+    for (int c : count) {
+        if (c != 0) {
+            return false;
+        }
+    }
+
+    return true;
+}
+```
+
+**Bug fixed along the way:** the decrement loop read `s.charAt(j)` instead
+of `t.charAt(j)`. That meant it decremented the same characters the first
+loop had just incremented, so every count always landed back on `0` no
+matter what `t` actually contained — the function returned `true` for any
+two same-length strings, including `"muk"` vs `"esh"` which share zero
+letters. Fixed by reading from `t` in the second loop.
+
+**Why it works:** if `s` and `t` are anagrams, every letter in `s` has a
+matching letter in `t`, so incrementing for `s` and decrementing for `t`
+cancels out to all zeros. Any leftover non-zero count means a letter
+appeared a different number of times in one string than the other.
+
+**Complexity:**
+- Time: `O(n)` — one pass over each string.
+- Space: `O(1)` — fixed-size 26-element array, independent of input length.
+
+---
+
+### 6. Valid Palindrome (LeetCode #125)
+**File:** [`src/test/java/com/automation/Leet_125_IsPalindrome.java`](src/test/java/com/automation/Leet_125_IsPalindrome.java)
+**Problem:** Given a string `s`, return `true` if it reads the same forward
+and backward after converting all uppercase letters to lowercase and
+removing all non-alphanumeric characters.
+
+**Example:**
+```
+Input:  s = "A man, a plan, a canal: Panama"
+Output: true   // "amanaplanacanalpanama" reads the same both ways
+```
+
+**Approach (two pointers):**
+1. Start `left` at index `0` and `right` at the last index.
+2. Move `left` forward while it points at a non-alphanumeric character;
+   move `right` backward the same way.
+3. Compare the lowercase versions of `s.charAt(left)` and `s.charAt(right)`.
+   If they differ, it's not a palindrome — return `false`.
+4. If they match, move both pointers inward and repeat.
+5. If the pointers cross without a mismatch, it's a palindrome.
+
+```java
+public static boolean isPalindrome(String s) {
+    int left = 0;
+    int right = s.length() - 1;
+
+    while (left < right) {
+        char leftChar = Character.toLowerCase(s.charAt(left));
+        char rightChar = Character.toLowerCase(s.charAt(right));
+
+        if (!Character.isLetterOrDigit(leftChar)) {
+            left++;
+            continue;
+        }
+
+        if (!Character.isLetterOrDigit(rightChar)) {
+            right--;
+            continue;
+        }
+
+        if (leftChar != rightChar) {
+            return false;
+        }
+
+        left++;
+        right--;
+    }
+
+    return true;
+}
+```
+
+**Why it works:** a palindrome mirrors around its center, so comparing the
+outermost characters and working inward checks every mirrored pair exactly
+once. Skipping non-alphanumeric characters on each side before comparing
+means punctuation and spacing never affect the result, and lowercasing both
+characters makes the comparison case-insensitive.
+
+**Complexity:**
+- Time: `O(n)` — each pointer moves across the string once.
+- Space: `O(1)` — only two index variables, no extra data structures.
+
+---
+
 <!--
 Template for new entries — copy this below for each new program:
 
